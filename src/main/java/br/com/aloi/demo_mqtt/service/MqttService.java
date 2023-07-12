@@ -10,6 +10,7 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,6 +40,13 @@ public class MqttService {
             e.printStackTrace();
         }
         startMethod();
+    }
+
+    @Scheduled(fixedRate = 500)
+    public void demoMessages(){
+        MqttMessage msg = readEngineTemp();
+        msg.setQos(0);
+        msg.setRetained(true);
     }
 
     private void startMethod() {
