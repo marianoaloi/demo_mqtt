@@ -1,22 +1,27 @@
 package br.com.aloi.demo_mqtt.service;
 
+import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.TimeUnit;
+
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.eclipse.paho.client.mqttv3.IMqttClient;
 import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
-import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
-@EnableScheduling
 public class MqttService {
+
+	private static final Logger log = LoggerFactory.getLogger(MqttService.class);
 
     private static final String TOPIC = "home/front/garden";
     IMqttClient publisher;
@@ -44,8 +49,9 @@ public class MqttService {
         startMethod();
     }
 
-    @Scheduled(fixedRate =  2 , timeUnit = TimeUnit.SECONDS)
+    @Scheduled(fixedRate =  2000)
     public void demoMessages(){
+        log.info(new Date().getTime()+"");
         MqttMessage msg = readEngineTemp();
         msg.setQos(0);
         msg.setRetained(true);
