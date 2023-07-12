@@ -10,10 +10,12 @@ import org.eclipse.paho.client.mqttv3.MqttClient;
 import org.eclipse.paho.client.mqttv3.MqttConnectOptions;
 import org.eclipse.paho.client.mqttv3.MqttException;
 import org.eclipse.paho.client.mqttv3.MqttMessage;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 @Component
+@EnableScheduling
 public class MqttService {
 
     private static final String TOPIC = "home/front/garden";
@@ -36,13 +38,13 @@ public class MqttService {
             options.setConnectionTimeout(10);
             publisher.connect(options);
         } catch (MqttException e) {
-            // TODO Auto-generated catch block
+            // 
             e.printStackTrace();
         }
         startMethod();
     }
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate =  2 , timeUnit = TimeUnit.SECONDS)
     public void demoMessages(){
         MqttMessage msg = readEngineTemp();
         msg.setQos(0);
@@ -60,7 +62,6 @@ public class MqttService {
             });
             receivedSignal.await(1, TimeUnit.MINUTES);
         } catch (MqttException | InterruptedException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
     }
@@ -76,7 +77,6 @@ public class MqttService {
         try {
             publisher.publish(TOPIC, msg);
         } catch (MqttException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         }
         return "";

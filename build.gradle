@@ -19,11 +19,11 @@ repositories {
 ext.libraries = {
 }
 dependencies {
+	// implementation 'org.springframework:spring-core:5.3.13'
 	// https://mvnrepository.com/artifact/org.eclipse.paho/org.eclipse.paho.client.mqttv3
 	implementation ('org.eclipse.paho:org.eclipse.paho.client.mqttv3:1.2.5')
 	implementation ('org.springframework.boot:spring-boot-starter-amqp')
 	implementation ('org.springframework.boot:spring-boot-starter-web')
-	implementation 'org.springframework:spring-core:5.3.13'
 
 	implementation 'org.springframework.boot:spring-boot-starter-actuator'
 
