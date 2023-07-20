@@ -1,5 +1,6 @@
 package br.com.aloi.demo_mqtt.service;
 
+import java.nio.ByteBuffer;
 import java.util.Date;
 import java.util.Random;
 import java.util.UUID;
@@ -51,10 +52,15 @@ public class MqttService {
 
     @Scheduled(fixedRate =  2000)
     public void demoMessages(){
-        log.info(new Date().getTime()+"");
+        // log.info(new Date().getTime()+"");
         MqttMessage msg = readEngineTemp();
-        msg.setQos(0);
+        msg.setQos(1);
         msg.setRetained(true);
+        try {
+            publisher.publish(TOPIC, msg);
+        } catch (MqttException e) {
+            e.printStackTrace();
+        }
     }
 
     private void startMethod() {
@@ -92,8 +98,8 @@ public class MqttService {
 
     private MqttMessage readEngineTemp() {
         double temp = 80 + rnd.nextDouble() * 20.0;
-        byte[] payload = String.format("T:%04.2f", temp)
-                .getBytes();
-        return new MqttMessage(payload);
+ 
+        //String.format("T:%04.2f", temp)                .getBytes();
+        return new MqttMessage(String.valueOf(temp).getBytes());
     }
 }
